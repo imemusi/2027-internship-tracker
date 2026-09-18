@@ -32,6 +32,11 @@ jobs:
       - name: Generate Top 20 recommendations
         run: python scripts/recommend.py
 
+      - name: Sync listings data for the Pages site
+        run: |
+          mkdir -p docs/data
+          cp data/listings.json docs/data/listings.json
+
       - name: Commit and push if changed
         run: |
           if [ -n "$(git status --porcelain)" ]; then
