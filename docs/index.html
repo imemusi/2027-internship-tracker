@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Signal — Internship Tracker</title>
+<meta name="description" content="Summer 2026/2027 SWE, AI/ML, Quant, Hardware and PM internship listings, refreshed automatically.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #faf8f4;
+    --paper-raised: #ffffff;
+    --ink: #1c1d22;
+    --ink-dim: #55575f;
+    --ink-faint: #8a8c93;
+    --line: #e4e0d7;
+    --line-strong: #d2ccbd;
+    --accent: #3454d1;
+    --accent-ink: #ffffff;
+    --accent-soft: #e9edfb;
+    --accent-soft-line: #c7d1f4;
+    --fresh: #1a8754;
+    --fresh-soft: #e4f5ec;
+    --aging: #a3690f;
+    --aging-soft: #faf0dd;
+    --stale: #b0413e;
+    --stale-soft: #fbe9e8;
+    --chip: #f1ede3;
+    --chip-line: #ddd6c5;
+    --shadow: 0 1px 2px rgba(28,29,34,0.04), 0 6px 20px -8px rgba(28,29,34,0.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #17181c;
+      --paper-raised: #1f2025;
+      --ink: #eeeceb;
+      --ink-dim: #a8a9b0;
+      --ink-faint: #75767d;
+      --line: #303136;
+      --line-strong: #3c3d43;
+      --accent: #7c94f2;
+      --accent-ink: #12142b;
+      --accent-soft: #232743;
+      --accent-soft-line: #34386a;
+      --fresh: #4fbf85;
+      --fresh-soft: #16281f;
+      --aging: #d6a04a;
+      --aging-soft: #2c2312;
+      --stale: #e0716e;
+      --stale-soft: #2c1a1a;
+      --chip: #232428;
+      --chip-line: #35363c;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px -8px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #17181c;
+    --paper-raised: #1f2025;
+    --ink: #eeeceb;
+    --ink-dim: #a8a9b0;
+    --ink-faint: #75767d;
+    --line: #303136;
+    --line-strong: #3c3d43;
+    --accent: #7c94f2;
+    --accent-ink: #12142b;
+    --accent-soft: #232743;
+    --accent-soft-line: #34386a;
+    --fresh: #4fbf85;
+    --fresh-soft: #16281f;
+    --aging: #d6a04a;
+    --aging-soft: #2c2312;
+    --stale: #e0716e;
+    --stale-soft: #2c1a1a;
+    --chip: #232428;
+    --chip-line: #35363c;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 6px 24px -8px rgba(0,0,0,0.5);
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  img { max-width: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-inline: 20px;
+  }
+
+  /* ---------- Masthead ---------- */
+  header.masthead {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding-block: 14px;
+  }
+  .masthead-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .brand .mark {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.55rem;
+    letter-spacing: -0.01em;
+  }
+  .brand .tag {
+    color: var(--ink-faint);
+    font-size: 0.8rem;
+    font-family: "JetBrains Mono", monospace;
+  }
+  .stat-strip {
+    display: flex;
+    gap: 22px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    flex-wrap: wrap;
+  }
+  .stat-strip b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .stat-strip .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fresh);
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  main { padding-bottom: 64px; }
+
+  /* ---------- Top Picks (hero) ---------- */
+  section.picks {
+    padding-block: 28px 8px;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .section-head h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .section-head .sub {
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+  }
+  .picks-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(78vw, 300px);
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-snap-type: x proximity;
+  }
+  .pick-card {
+    scroll-snap-align: start;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pick-card .rank {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+  }
+  .pick-card .company {
+    font-weight: 600;
+    font-size: 0.98rem;
+  }
+  .pick-card .role {
+    color: var(--ink-dim);
+    font-size: 0.85rem;
+    line-height: 1.35;
+    min-height: 2.7em;
+  }
+  .pick-card .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    font-size: 0.76rem;
+  }
+  .pick-card .loc {
+    color: var(--ink-faint);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 62%;
+  }
+  .pick-card a.apply {
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .pick-card a.apply:after { content: " →"; }
+
+  /* ---------- Controls ---------- */
+  section.board { padding-top: 22px; }
+  .controls {
+    position: sticky;
+    top: calc(53px + env(safe-area-inset-top, 0px));
+    z-index: 15;
+    background: var(--paper);
+    padding-block: 12px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .search-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .search-box {
+    flex: 1 1 240px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%;
+    padding: 9px 12px 9px 32px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: var(--paper-raised);
+    color: var(--ink);
+    font-size: 0.88rem;
+    font-family: inherit;
+  }
+  .search-box input:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+  }
+  .search-box svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    color: var(--ink-faint);
+  }
+  select#sortSel {
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: var(--paper-raised);
+    color: var(--ink);
+    font-size: 0.85rem;
+    font-family: inherit;
+  }
+  .chip-row {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .chip-row .group-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-right: 2px;
+  }
+  .chip {
+    border: 1px solid var(--chip-line);
+    background: var(--chip);
+    color: var(--ink-dim);
+    border-radius: 999px;
+    padding: 5px 11px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: inherit;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+  .chip:hover { border-color: var(--line-strong); }
+  .chip.active {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft-line);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .chip:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .result-count {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.76rem;
+    color: var(--ink-faint);
+    padding-top: 14px;
+  }
+
+  /* ---------- Table ---------- */
+  .table-scroll {
+    overflow-x: auto;
+    margin-top: 8px;
+  }
+  table.board-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.86rem;
+    min-width: 720px;
+  }
+  .board-table thead th {
+    text-align: left;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    font-weight: 500;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .board-table tbody tr {
+    border-bottom: 1px solid var(--line);
+  }
+  .board-table tbody tr:hover {
+    background: var(--paper-raised);
+  }
+  .board-table td {
+    padding: 10px 10px;
+    vertical-align: top;
+  }
+  .cell-company { font-weight: 600; white-space: nowrap; }
+  .cell-role { color: var(--ink); max-width: 340px; }
+  .cell-loc { color: var(--ink-dim); font-size: 0.82rem; white-space: nowrap; max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+  .cell-cat {
+    font-size: 0.72rem;
+    color: var(--ink-dim);
+    white-space: nowrap;
+  }
+  .cell-date {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .freshness-pill {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    font-family: "JetBrains Mono", monospace;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  .fresh { background: var(--fresh-soft); color: var(--fresh); }
+  .aging { background: var(--aging-soft); color: var(--aging); }
+  .stale { background: var(--stale-soft); color: var(--stale); }
+  .cell-apply a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+  .cell-apply a:after { content: " →"; }
+
+  .empty-state {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--ink-faint);
+    font-size: 0.9rem;
+  }
+
+  footer {
+    padding: 28px 0 40px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 0.78rem;
+    border-top: 1px solid var(--line);
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+  footer a { color: var(--ink-dim); }
+
+  @media (max-width: 640px) {
+    .stat-strip { display: none; }
+    .cell-loc { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap masthead-row">
+    <div class="brand">
+      <span class="mark">Signal</span>
+      <span class="tag">2027 Internship Tracker</span>
+    </div>
+    <div class="stat-strip">
+      <span><span class="dot"></span><b id="statActive">—</b> active listings</span>
+      <span>last refresh <b id="statRefresh">—</b></span>
+      <span><a href="https://github.com/imemusi/2027-internship-tracker" target="_blank" rel="noopener">source on GitHub</a></span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="picks">
+      <div class="section-head">
+        <h2>Today's top picks</h2>
+        <span class="sub" id="picksSub">Ranked by freshness, company signal, and YC batch</span>
+      </div>
+      <div class="picks-rail" id="picksRail" aria-label="Top recommended internships"></div>
+    </section>
+
+    <section class="board">
+      <div class="controls">
+        <div class="search-row">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Search company or role…" aria-label="Search company or role">
+          </div>
+          <select id="sortSel" aria-label="Sort listings">
+            <option value="date_desc">Newest first</option>
+            <option value="date_asc">Oldest first</option>
+            <option value="company_asc">Company A–Z</option>
+          </select>
+        </div>
+        <div class="chip-row" id="categoryChips"></div>
+        <div class="chip-row" id="termChips"></div>
+      </div>
+      <div class="result-count" id="resultCount"></div>
+      <div class="table-scroll">
+        <table class="board-table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Role</th>
+              <th>Location</th>
+              <th>Category</th>
+              <th>Posted</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+        <div class="empty-state" id="emptyState" hidden>No listings match your filters. Try clearing a filter or search term.</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    Data refreshes automatically 5×/day from Simplify and vanshb03 internship lists.
+    <a href="https://github.com/imemusi/2027-internship-tracker" target="_blank" rel="noopener">View repo</a> ·
+    <a href="https://github.com/imemusi/2027-internship-tracker/blob/master/APPLICATIONS.md" target="_blank" rel="noopener">Application tracker</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var CATEGORY_MAP = {
+    "AI/ML/Data": "Data Science, AI & Machine Learning",
+    "Data Science, AI & Machine Learning": "Data Science, AI & Machine Learning",
+    "Hardware": "Hardware Engineering",
+    "Hardware Engineering": "Hardware Engineering",
+    "Software": "Software Engineering",
+    "Software Engineering": "Software Engineering",
+    "Quant": "Quantitative Finance",
+    "Quantitative Finance": "Quantitative Finance",
+    "Product": "Product Management",
+    "Product Management": "Product Management",
+    "Other": "Other"
+  };
+  var CATEGORY_ORDER = [
+    "Software Engineering",
+    "Data Science, AI & Machine Learning",
+    "Hardware Engineering",
+    "Quantitative Finance",
+    "Product Management",
+    "Other"
+  ];
+  var CATEGORY_SHORT = {
+    "Software Engineering": "SWE",
+    "Data Science, AI & Machine Learning": "AI/ML/Data",
+    "Hardware Engineering": "Hardware",
+    "Quantitative Finance": "Quant",
+    "Product Management": "PM",
+    "Other": "Other"
+  };
+
+  var TIER1 = ["google","meta","apple","amazon","microsoft","openai","anthropic","netflix",
+    "stripe","spacex","tesla","nvidia","deepmind","jane street","citadel","citadel securities",
+    "two sigma","de shaw","hudson river trading","jump trading","susquehanna international group",
+    "sig","palantir","databricks","figma","notion","linear","scale ai","anduril","waymo",
+    "boston dynamics","salesforce","adobe","airbnb","lyft","uber","doordash","coinbase",
+    "robinhood","ramp","brex","plaid","chime","rippling","retool","airtable","asana",
+    "snowflake","datadog","cloudflare","vercel","hashicorp","confluent","elastic","mongodb",
+    "cockroachdb","pinecone","weaviate","hugging face"];
+
+  var state = {
+    listings: [],
+    filtered: [],
+    query: "",
+    category: "All",
+    term: "All",
+    sort: "date_desc"
+  };
+
+  var els = {
+    picksRail: document.getElementById("picksRail"),
+    picksSub: document.getElementById("picksSub"),
+    categoryChips: document.getElementById("categoryChips"),
+    termChips: document.getElementById("termChips"),
+    searchInput: document.getElementById("searchInput"),
+    sortSel: document.getElementById("sortSel"),
+    tableBody: document.getElementById("tableBody"),
+    resultCount: document.getElementById("resultCount"),
+    emptyState: document.getElementById("emptyState"),
+    statActive: document.getElementById("statActive"),
+    statRefresh: document.getElementById("statRefresh")
+  };
+
+  function normCategory(raw) {
+    return CATEGORY_MAP[raw] || "Other";
+  }
+
+  function daysAgo(ts) {
+    if (!ts) return null;
+    var posted = new Date(ts * 1000);
+    var now = new Date();
+    return Math.max(0, Math.floor((now - posted) / 86400000));
+  }
+
+  function fmtDate(ts) {
+    if (!ts) return "Unknown";
+    var d = new Date(ts * 1000);
+    return d.toISOString().slice(0, 10);
+  }
+
+  function freshnessBand(days) {
+    if (days === null) return { cls: "stale", label: "?" };
+    if (days <= 2) return { cls: "fresh", label: days + "d" };
+    if (days <= 10) return { cls: "aging", label: days + "d" };
+    return { cls: "stale", label: days + "d" };
+  }
+
+  function escapeHtml(s) {
+    return String(s || "").replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function scoreForPicks(l) {
+    var days = daysAgo(l.date_posted);
+    var fresh = days === null ? 0 : days === 0 ? 3 : days <= 1 ? 2.5 : days <= 3 ? 2 : days <= 7 ? 1 : days <= 14 ? 0.5 : 0;
+    var name = (l.company_name || "").toLowerCase().trim();
+    var tier = TIER1.indexOf(name) !== -1 ? 3 : 0;
+    var catWeight = { "Software Engineering": 1, "Data Science, AI & Machine Learning": 1, "Quantitative Finance": 0.9, "Hardware Engineering": 0.7, "Product Management": 0.6, "Other": 0.5 }[normCategory(l.category)] || 0.5;
+    return fresh + tier + catWeight;
+  }
+
+  function buildPicks() {
+    var active = state.listings.filter(function (l) { return l.active && l.is_visible !== false; });
+    var scored = active.map(function (l) { return { l: l, s: scoreForPicks(l) }; });
+    scored.sort(function (a, b) { return b.s - a.s; });
+    var seen = {};
+    var picks = [];
+    for (var i = 0; i < scored.length && picks.length < 12; i++) {
+      var l = scored[i].l;
+      var key = (l.company_name || "").toLowerCase().trim();
+      if (seen[key]) continue;
+      seen[key] = true;
+      picks.push(l);
+    }
+    return picks;
+  }
+
+  function renderPicks() {
+    var picks = buildPicks();
+    els.picksRail.innerHTML = picks.map(function (l, i) {
+      var days = daysAgo(l.date_posted);
+      var band = freshnessBand(days);
+      var loc = (l.locations || []).join(", ") || "Remote / unspecified";
+      return (
+        '<div class="pick-card">' +
+          '<div class="rank">#' + (i + 1) + '</div>' +
+          '<div class="company">' + escapeHtml(l.company_name) + "</div>" +
+          '<div class="role">' + escapeHtml(l.title) + "</div>" +
+          '<div class="meta">' +
+            '<span class="freshness-pill ' + band.cls + '">' + band.label + " ago</span>" +
+            '<a class="apply" href="' + escapeHtml(l.url) + '" target="_blank" rel="noopener">Apply</a>' +
+          "</div>" +
+          '<div class="loc" style="font-size:.74rem;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escapeHtml(loc) + "</div>" +
+        "</div>"
+      );
+    }).join("");
+  }
+
+  function buildChips() {
+    var catCounts = {};
+    var termCounts = {};
+    state.listings.forEach(function (l) {
+      if (!l.active || l.is_visible === false) return;
+      var cat = normCategory(l.category);
+      catCounts[cat] = (catCounts[cat] || 0) + 1;
+      (l.terms || ["N/A"]).forEach(function (t) {
+        termCounts[t] = (termCounts[t] || 0) + 1;
+      });
+    });
+
+    var catHtml = '<span class="group-label">Category</span>';
+    catHtml += chipHtml("All", "category", state.category, catCounts && Object.values(catCounts).reduce(function(a,b){return a+b;},0));
+    CATEGORY_ORDER.forEach(function (cat) {
+      if (!catCounts[cat]) return;
+      catHtml += chipHtml(cat, "category", state.category, catCounts[cat], CATEGORY_SHORT[cat]);
+    });
+    els.categoryChips.innerHTML = catHtml;
+
+    var relevantTerms = ["Summer 2026", "Summer 2027", "Fall 2026", "Winter 2027", "Spring 2027"];
+    var termHtml = '<span class="group-label">Term</span>';
+    var totalActive = state.listings.filter(function(l){return l.active && l.is_visible !== false;}).length;
+    termHtml += chipHtml("All", "term", state.term, totalActive);
+    relevantTerms.forEach(function (t) {
+      if (!termCounts[t]) return;
+      termHtml += chipHtml(t, "term", state.term, termCounts[t]);
+    });
+    els.termChips.innerHTML = termHtml;
+
+    els.categoryChips.querySelectorAll(".chip").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.category = btn.dataset.value;
+        applyFilters();
+        buildChips();
+      });
+    });
+    els.termChips.querySelectorAll(".chip").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.term = btn.dataset.value;
+        applyFilters();
+        buildChips();
+      });
+    });
+  }
+
+  function chipHtml(value, group, current, count, shortLabel) {
+    var active = value === current ? " active" : "";
+    var label = shortLabel || value;
+    return '<button class="chip' + active + '" data-value="' + escapeHtml(value) + '" data-group="' + group + '">' +
+      escapeHtml(label) + (count !== undefined ? ' <span style="opacity:.6">' + count + "</span>" : "") +
+      "</button>";
+  }
+
+  function applyFilters() {
+    var q = state.query.trim().toLowerCase();
+    var rows = state.listings.filter(function (l) {
+      if (!l.active || l.is_visible === false) return false;
+      if (state.category !== "All" && normCategory(l.category) !== state.category) return false;
+      if (state.term !== "All" && (l.terms || []).indexOf(state.term) === -1) return false;
+      if (q) {
+        var hay = ((l.company_name || "") + " " + (l.title || "")).toLowerCase();
+        if (hay.indexOf(q) === -1) return false;
+      }
+      return true;
+    });
+
+    rows.sort(function (a, b) {
+      if (state.sort === "company_asc") {
+        return (a.company_name || "").localeCompare(b.company_name || "");
+      }
+      var da = a.date_posted || 0, db = b.date_posted || 0;
+      return state.sort === "date_asc" ? da - db : db - da;
+    });
+
+    state.filtered = rows;
+    renderTable();
+  }
+
+  function renderTable() {
+    var rows = state.filtered;
+    els.resultCount.textContent = rows.length.toLocaleString() + " listing" + (rows.length === 1 ? "" : "s");
+    els.emptyState.hidden = rows.length !== 0;
+
+    var MAX_RENDER = 400;
+    var slice = rows.slice(0, MAX_RENDER);
+
+    els.tableBody.innerHTML = slice.map(function (l) {
+      var days = daysAgo(l.date_posted);
+      var band = freshnessBand(days);
+      var loc = (l.locations || []).join(", ") || "—";
+      var cat = normCategory(l.category);
+      return (
+        "<tr>" +
+          '<td class="cell-company">' + escapeHtml(l.company_name) + "</td>" +
+          '<td class="cell-role">' + escapeHtml(l.title) + "</td>" +
+          '<td class="cell-loc">' + escapeHtml(loc) + "</td>" +
+          '<td class="cell-cat">' + escapeHtml(CATEGORY_SHORT[cat] || cat) + "</td>" +
+          '<td class="cell-date"><span class="freshness-pill ' + band.cls + '">' + band.label + '</span>' + escapeHtml(fmtDate(l.date_posted)) + "</td>" +
+          '<td class="cell-apply">' + (l.url ? '<a href="' + escapeHtml(l.url) + '" target="_blank" rel="noopener">Apply</a>' : "—") + "</td>" +
+        "</tr>"
+      );
+    }).join("");
+
+    if (rows.length > MAX_RENDER) {
+      var tr = document.createElement("tr");
+      var td = document.createElement("td");
+      td.colSpan = 6;
+      td.style.textAlign = "center";
+      td.style.color = "var(--ink-faint)";
+      td.style.fontSize = "0.8rem";
+      td.style.padding = "14px";
+      td.textContent = "Showing first " + MAX_RENDER.toLocaleString() + " of " + rows.length.toLocaleString() + " — narrow your search to see more.";
+      tr.appendChild(td);
+      els.tableBody.appendChild(tr);
+    }
+  }
+
+  function wireControls() {
+    els.searchInput.addEventListener("input", function (e) {
+      state.query = e.target.value;
+      applyFilters();
+    });
+    els.sortSel.addEventListener("change", function (e) {
+      state.sort = e.target.value;
+      applyFilters();
+    });
+  }
+
+  function init(data) {
+    state.listings = data;
+    var active = data.filter(function (l) { return l.active && l.is_visible !== false; });
+    els.statActive.textContent = active.length.toLocaleString();
+
+    var latestTs = 0;
+    data.forEach(function (l) { if (l.date_updated && l.date_updated > latestTs) latestTs = l.date_updated; });
+    els.statRefresh.textContent = latestTs ? new Date(latestTs * 1000).toISOString().slice(0, 16).replace("T", " ") + " UTC" : "unknown";
+
+    renderPicks();
+    buildChips();
+    wireControls();
+    applyFilters();
+  }
+
+  fetch("../data/listings.json")
+    .then(function (r) { return r.json(); })
+    .then(init)
+    .catch(function (err) {
+      els.tableBody.innerHTML = '<tr><td colspan="6" style="padding:24px;text-align:center;color:var(--stale);">Could not load listings data. ' + escapeHtml(err.message) + "</td></tr>";
+    });
+})();
+</script>
+
+</body>
+</html>
